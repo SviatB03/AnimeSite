@@ -1,31 +1,61 @@
 ﻿@model IEnumerable<AnimeSite.Models.UserAnimeTrackingViewModel>
 
-<h2>Saved Animes</h2>
+@{
+    ViewData["Title"] = "Saved Animes";
+}
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Genre</th>
-            <th>Release Date</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.AnimeTitle</td>
-                <td>@item.AnimeDescription</td>
-                <td>@item.AnimeGenre</td>
-                <td>@item.AnimeReleaseDate.ToString("yyyy-MM-dd")</td>
-                <td>
-                    <form asp-action="Delete" asp-route-id="@item.UserAnimeTrackingId" method="post">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                </td>
-            </tr>
+<div class="container-md">
+    <div class="rounded-container">
+        <h2>@ViewData["Title"]</h2>
+
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card anime-card">
+                        @if (!string.IsNullOrEmpty(item.AnimeImagePath))
+                        {
+                            <img src="@Url.Content(item.AnimeImagePath)" class="card-img-top" alt="@item.AnimeTitle">
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@item.AnimeTitle</h5>
+                            <p class="card-text">@item.AnimeDescription</p>
+                            <p class="card-text"><strong>Genre: </strong>@item.AnimeGenre</p>
+                            <p class="card-text"><strong>Release Date: </strong>@item.AnimeReleaseDate.ToString("yyyy-MM-dd")</p>
+                            <form asp-action="Delete" asp-route-id="@item.UserAnimeTrackingId" method="post">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .rounded-container {
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .anime-card {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        overflow: hidden;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .anime-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-    </tbody>
-</table>
+
+        .anime-card img {
+            width: 100%;
+            height: auto;
+        }
+</style>
+

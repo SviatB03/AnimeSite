@@ -18,7 +18,8 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav flex-grow-1 justify-content-center">
+                        <!-- Центрування пунктів меню -->
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Головна</a>
                         </li>
@@ -35,7 +36,6 @@
                                 <span class="nav-link text-dark">Привіт, @Context.Session.GetString("Username")!</span>
                             </li>
 
-
                             <!-- Admin section -->
                             @if (Context.Session.GetString("UserType") == "Admin")
                             {
@@ -51,12 +51,8 @@
                                 </li>
                             }
                             <li class="nav-item">
-                                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
-                                    <button type="submit" class="btn btn-link nav-link text-danger">Вийти</button>
-                                </form>
+                                <a class="nav-link text-danger" asp-area="" asp-controller="Account" asp-action="Logout">Вийти</a> <!-- Посилання на логаут -->
                             </li>
-
-
                         }
                         else
                         {
@@ -68,8 +64,6 @@
                             </li>
                         }
                     </ul>
-
-
                 </div>
             </div>
         </nav>
@@ -91,3 +85,15 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+<style>
+    .nav-link {
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+        .nav-link:hover {
+            background-color: #f0f0f0;
+        }
+</style>

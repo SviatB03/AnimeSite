@@ -1,34 +1,61 @@
 ﻿@model IEnumerable<AnimeSite.Entity.Genre>
 
 @{
-    ViewData["Title"] = "Categories";
+    ViewData["Title"] = "Категорії";
 }
 
-<h2>Categories</h2>
-
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
-</p>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.GenreId</td>
-                <td>@item.Name</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.GenreId">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.GenreId">Delete</a>
-                </td>
-            </tr>
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AnimeSite</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        .rounded-container {
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 20px;
         }
-    </tbody>
-</table>
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="rounded-container">
+                    <h2>Категорії</h2>
+
+                    <p>
+                        <a asp-action="Create" class="btn btn-primary">Створити нову</a>
+                    </p>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Назва</th>
+                                <th>Дії</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.GenreId</td>
+                                    <td>@item.Name</td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@item.GenreId" class="btn btn-sm btn-primary">Редагувати</a>
+                                        <a asp-action="Delete" asp-route-id="@item.GenreId" class="btn btn-sm btn-danger">Видалити</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
