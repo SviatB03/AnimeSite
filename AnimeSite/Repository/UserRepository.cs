@@ -24,15 +24,20 @@ namespace AnimeSite.Repository
             return await _dbConnection.QuerySingleOrDefaultAsync<User>("SELECT * FROM User WHERE UserId = @Id", new { Id = id });
         }
 
+        public async Task<User> GetByEmailAsync(string email)
+        {
+            return await _dbConnection.QuerySingleOrDefaultAsync<User>("SELECT * FROM User WHERE Email = @Email", new { Email = email });
+        }
+
         public async Task AddAsync(User user)
         {
-            var sql = "INSERT INTO User (Username, Email, Password, MobileNumber) VALUES (@Username, @Email, @Password, @MobileNumber)";
+            var sql = "INSERT INTO User (Username, Email, Password, MobileNumber, UserType) VALUES (@Username, @Email, @Password, @MobileNumber, @UserType)";
             await _dbConnection.ExecuteAsync(sql, user);
         }
 
         public async Task UpdateAsync(User user)
         {
-            var sql = "UPDATE User SET Username = @Username, Email = @Email, Password = @Password, MobileNumber = @MobileNumber WHERE UserId = @UserId";
+            var sql = "UPDATE User SET Username = @Username, Email = @Email, Password = @Password, MobileNumber = @MobileNumber, UserType = @UserType WHERE UserId = @UserId";
             await _dbConnection.ExecuteAsync(sql, user);
         }
 
@@ -41,5 +46,11 @@ namespace AnimeSite.Repository
             var sql = "DELETE FROM User WHERE UserId = @Id";
             await _dbConnection.ExecuteAsync(sql, new { Id = id });
         }
+
+        public async Task<User> AuthenticateAsync(string email, string password)
+        {
+            return await _dbConnection.QuerySingleOrDefaultAsync<User>("SELECT * FROM User WHERE Email = @Email AND Password = @Password", new { Email = email, Password = password });
+        }
     }
+
 }
