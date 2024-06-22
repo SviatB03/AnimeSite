@@ -40,6 +40,7 @@
             <th>Genre</th>
             <th>Release Date</th>
             <th>Image</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -62,13 +63,22 @@
                             <span>No Image</span>
                         }
                     </td>
+                    <td>
+                        @if (Context.Session.GetInt32("UserId").HasValue)
+                        {
+                            <form asp-area="" asp-controller="Anime" asp-action="AddToSaved" method="post">
+                                <input type="hidden" name="animeId" value="@anime.AnimeId" />
+                                <button type="submit" class="btn btn-primary">Додати в збережене</button>
+                            </form>
+                        }
+                    </td>
                 </tr>
             }
         }
         else
         {
             <tr>
-                <td colspan="5">No anime found.</td>
+                <td colspan="6">No anime found.</td>
             </tr>
         }
     </tbody>

@@ -21,7 +21,7 @@ namespace AnimeSite.Repository
 
         public async Task<UserAnimeTracking> GetByIdAsync(int id)
         {
-            return await _dbConnection.QuerySingleOrDefaultAsync<UserAnimeTracking>("SELECT * FROM UserAnimeTracking WHERE UserAnimeTrackingId = @Id", new { Id = id });
+            return await _dbConnection.QueryFirstOrDefaultAsync<UserAnimeTracking>("SELECT * FROM UserAnimeTracking WHERE UserAnimeTrackingId = @Id", new { Id = id });
         }
 
         public async Task AddAsync(UserAnimeTracking userAnimeTracking)
@@ -40,6 +40,12 @@ namespace AnimeSite.Repository
         {
             var sql = "DELETE FROM UserAnimeTracking WHERE UserAnimeTrackingId = @Id";
             await _dbConnection.ExecuteAsync(sql, new { Id = id });
+        }
+
+        public async Task<UserAnimeTracking> GetByUserAndAnimeIdAsync(int userId, int animeId)
+        {
+            var sql = "SELECT * FROM UserAnimeTracking WHERE UserId = @UserId AND AnimeId = @AnimeId";
+            return await _dbConnection.QueryFirstOrDefaultAsync<UserAnimeTracking>(sql, new { UserId = userId, AnimeId = animeId });
         }
     }
 }
