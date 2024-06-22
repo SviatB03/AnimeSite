@@ -30,8 +30,9 @@
                         @if (Context.Session.GetInt32("UserId").HasValue)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Anime" asp-action="UserAnimeList">Saved Anime</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="UserAnimeTracking" asp-action="Index">Saved Anime</a>
                             </li>
+
                             <li class="nav-item">
                                 <span class="nav-link text-dark">Hello, @Context.Session.GetString("Username")!</span>
                             </li>

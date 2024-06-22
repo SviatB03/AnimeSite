@@ -10,5 +10,6 @@ namespace AnimeSite.Repository.Interfaces
         Task UpdateAsync(UserAnimeTracking userAnimeTracking);
         Task<UserAnimeTracking> GetByUserAndAnimeIdAsync(int userId, int animeId);
         Task DeleteAsync(int id);
+        Task<IEnumerable<UserAnimeTracking>> GetByUserIdAsync(int userId);
     }
 }

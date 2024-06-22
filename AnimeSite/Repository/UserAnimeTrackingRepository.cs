@@ -1,5 +1,8 @@
 ﻿using AnimeSite.Repository.Interfaces;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
 using Dapper;
 using AnimeSite.Entity;
 
@@ -46,6 +49,12 @@ namespace AnimeSite.Repository
         {
             var sql = "SELECT * FROM UserAnimeTracking WHERE UserId = @UserId AND AnimeId = @AnimeId";
             return await _dbConnection.QueryFirstOrDefaultAsync<UserAnimeTracking>(sql, new { UserId = userId, AnimeId = animeId });
+        }
+
+        public async Task<IEnumerable<UserAnimeTracking>> GetByUserIdAsync(int userId)
+        {
+            var sql = "SELECT * FROM UserAnimeTracking WHERE UserId = @UserId";
+            return await _dbConnection.QueryAsync<UserAnimeTracking>(sql, new { UserId = userId });
         }
     }
 }

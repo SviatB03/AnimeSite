@@ -1,0 +1,31 @@
+﻿@model IEnumerable<AnimeSite.Models.UserAnimeTrackingViewModel>
+
+<h2>Saved Animes</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Genre</th>
+            <th>Release Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.AnimeTitle</td>
+                <td>@item.AnimeDescription</td>
+                <td>@item.AnimeGenre</td>
+                <td>@item.AnimeReleaseDate.ToString("yyyy-MM-dd")</td>
+                <td>
+                    <form asp-action="Delete" asp-route-id="@item.UserAnimeTrackingId" method="post">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
