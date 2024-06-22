@@ -1,8 +1,10 @@
 ﻿using AnimeSite.Entity;
 using AnimeSite.Models;
-using AnimeSite.Repository;
 using AnimeSite.Repository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AnimeSite.Controllers
 {
@@ -73,20 +75,16 @@ namespace AnimeSite.Controllers
             var userId = HttpContext.Session.GetInt32("UserId");
             if (!userId.HasValue)
             {
-                // Обробка, якщо користувач не авторизований
                 return RedirectToAction("Login", "Account");
             }
 
-            // Перевірка, чи це аніме вже є у збережених користувачем
             var existingTracking = await _userAnimeTrackingRepository.GetByUserAndAnimeIdAsync(userId.Value, animeId);
             if (existingTracking != null)
             {
-                // Обробка, якщо аніме вже збережене
                 TempData["Message"] = "Це аніме вже додане в збережені.";
                 return RedirectToAction("Index");
             }
 
-            // Додавання аніме до збережених
             var tracking = new UserAnimeTracking
             {
                 UserId = userId.Value,
@@ -97,8 +95,6 @@ namespace AnimeSite.Controllers
             TempData["Message"] = "Аніме успішно додане в збережене!";
             return RedirectToAction("Index");
         }
-
-        // Адміністраторські методи
 
         public async Task<IActionResult> AdminIndex()
         {
@@ -122,14 +118,20 @@ namespace AnimeSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AdminCreate(AdminAnimeViewModel viewModel)
         {
-            if (ModelState.IsValid)
+
+            if (viewModel.Image != null && viewModel.Image.Length > 0)
             {
-                await _animeRepository.AddAsync(viewModel.Anime);
-                return RedirectToAction(nameof(AdminIndex));
+                var filePath = Path.Combine("wwwroot/images", Path.GetFileName(viewModel.Image.FileName));
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await viewModel.Image.CopyToAsync(stream);
+                }
+                viewModel.Anime.ImagePath = $"/images/{Path.GetFileName(viewModel.Image.FileName)}";
             }
 
-            viewModel.Genres = await _genreRepository.GetAllAsync();
-            return View(viewModel);
+            await _animeRepository.AddAsync(viewModel.Anime);
+            return RedirectToAction(nameof(AdminIndex));
+
         }
 
         [HttpGet]
@@ -160,14 +162,20 @@ namespace AnimeSite.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+
+            if (viewModel.Image != null && viewModel.Image.Length > 0)
             {
-                await _animeRepository.UpdateAsync(viewModel.Anime);
-                return RedirectToAction(nameof(AdminIndex));
+                var filePath = Path.Combine("wwwroot/images", Path.GetFileName(viewModel.Image.FileName));
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await viewModel.Image.CopyToAsync(stream);
+                }
+                viewModel.Anime.ImagePath = $"/images/{Path.GetFileName(viewModel.Image.FileName)}";
             }
 
-            viewModel.Genres = await _genreRepository.GetAllAsync();
-            return View(viewModel);
+            await _animeRepository.UpdateAsync(viewModel.Anime);
+            return RedirectToAction(nameof(AdminIndex));
+
         }
 
         [HttpGet]
