@@ -13,7 +13,11 @@ namespace AnimeSite.Controllers
         private readonly IReleaseScheduleRepository _releaseScheduleRepository;
         private readonly IUserAnimeTrackingRepository _userAnimeTrackingRepository;
 
-        public AnimeController(IAnimeRepository animeRepository, IGenreRepository genreRepository, IReleaseScheduleRepository releaseScheduleRepository, IUserAnimeTrackingRepository userAnimeTrackingRepository)
+        public AnimeController(
+            IAnimeRepository animeRepository,
+            IGenreRepository genreRepository,
+            IReleaseScheduleRepository releaseScheduleRepository,
+            IUserAnimeTrackingRepository userAnimeTrackingRepository)
         {
             _animeRepository = animeRepository;
             _genreRepository = genreRepository;
@@ -94,5 +98,77 @@ namespace AnimeSite.Controllers
             return RedirectToAction("Index");
         }
 
+        // Адміністраторські методи
+
+        public async Task<IActionResult> AdminIndex()
+        {
+            var animes = await _animeRepository.GetAllAsync();
+            return View(animes);
+        }
+
+        [HttpGet]
+        public IActionResult AdminCreate()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AdminCreate(Anime anime)
+        {
+            if (ModelState.IsValid)
+            {
+                await _animeRepository.AddAsync(anime);
+                return RedirectToAction(nameof(AdminIndex));
+            }
+            return View(anime);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AdminEdit(int id)
+        {
+            var anime = await _animeRepository.GetByIdAsync(id);
+            if (anime == null)
+            {
+                return NotFound();
+            }
+            return View(anime);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AdminEdit(int id, Anime anime)
+        {
+            if (id != anime.AnimeId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                await _animeRepository.UpdateAsync(anime);
+                return RedirectToAction(nameof(AdminIndex));
+            }
+            return View(anime);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AdminDelete(int id)
+        {
+            var anime = await _animeRepository.GetByIdAsync(id);
+            if (anime == null)
+            {
+                return NotFound();
+            }
+            return View(anime);
+        }
+
+        [HttpPost, ActionName("AdminDelete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AdminDeleteConfirmed(int id)
+        {
+            await _animeRepository.DeleteAsync(id);
+            return RedirectToAction(nameof(AdminIndex));
+        }
     }
 }
