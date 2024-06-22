@@ -1,0 +1,61 @@
+﻿@model IEnumerable<AnimeSite.Entity.User>
+
+@{
+    ViewData["Title"] = "Список користувачів";
+}
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AnimeSite</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        .rounded-container {
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="rounded-container">
+                    <h1>Список користувачів</h1>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Ім'я користувача</th>
+                                <th>Email</th>
+                                <th>Мобільний номер</th>
+                                <th>Тип користувача</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model)
+                            {
+                                <tr>
+                                    <td>@user.Username</td>
+                                    <td>@user.Email</td>
+                                    <td>@user.MobileNumber</td>
+                                    <td>@user.UserType</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
