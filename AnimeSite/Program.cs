@@ -9,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDistributedMemoryCache(); // Add distributed memory cache services
+builder.Services.AddSession(); // Add session services
 
 // Add MySQL connection
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -37,6 +39,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseSession(); // Use session
 
 app.MapControllerRoute(
     name: "default",

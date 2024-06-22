@@ -54,12 +54,20 @@ namespace AnimeSite.Controllers
                 var user = await _userRepository.AuthenticateAsync(model.Email, model.Password);
                 if (user != null)
                 {
-                    // Here you should set the authentication cookie
+                    HttpContext.Session.SetInt32("UserId", user.UserId);
+                    HttpContext.Session.SetString("UserType", user.UserType);
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "Invalid login attempt.");
             }
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login");
         }
     }
 }
