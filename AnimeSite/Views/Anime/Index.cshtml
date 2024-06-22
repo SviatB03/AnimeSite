@@ -12,9 +12,12 @@
     <div class="form-group mr-2">
         <select name="genreId" class="form-control">
             <option value="">All Genres</option>
-            @foreach (var genre in Model.Genres)
+            @if (Model.Genres != null)
             {
-                <option value="@genre.GenreId" selected="@((Model.GenreId == genre.GenreId).ToString().ToLower())">@genre.Name</option>
+                @foreach (var genre in Model.Genres)
+                {
+                    <option value="@genre.GenreId" selected="@((Model.GenreId == genre.GenreId).ToString().ToLower())">@genre.Name</option>
+                }
             }
         </select>
     </div>
@@ -40,23 +43,32 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var anime in Model.Animes)
+        @if (Model.Animes != null)
+        {
+            @foreach (var anime in Model.Animes)
+            {
+                <tr>
+                    <td>@anime.Title</td>
+                    <td>@anime.Description</td>
+                    <td>@(Model.Genres?.FirstOrDefault(g => g.GenreId == anime.GenreId)?.Name)</td>
+                    <td>@(Model.ReleaseSchedules?.FirstOrDefault(rs => rs.AnimeId == anime.AnimeId)?.ReleaseDate.ToString("yyyy-MM-dd"))</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(anime.ImagePath))
+                        {
+                            <img src="@Url.Content(anime.ImagePath)" alt="@anime.Title" style="max-height: 100px;" />
+                        }
+                        else
+                        {
+                            <span>No Image</span>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        else
         {
             <tr>
-                <td>@anime.Title</td>
-                <td>@anime.Description</td>
-                <td>@Model.Genres.FirstOrDefault(g => g.GenreId == anime.GenreId)?.Name</td>
-                <td>@Model.ReleaseSchedules.FirstOrDefault(rs => rs.AnimeId == anime.AnimeId)?.ReleaseDate.ToString("yyyy-MM-dd")</td>
-                <td>
-                    @if (!string.IsNullOrEmpty(anime.ImagePath))
-                    {
-                        <img src="@Url.Content(anime.ImagePath)" alt="@anime.Title" style="max-height: 100px;" />
-                    }
-                    else
-                    {
-                        <span>No Image</span>
-                    }
-                </td>
+                <td colspan="5">No anime found.</td>
             </tr>
         }
     </tbody>

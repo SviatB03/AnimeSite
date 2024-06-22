@@ -56,6 +56,7 @@ namespace AnimeSite.Controllers
                 {
                     HttpContext.Session.SetInt32("UserId", user.UserId);
                     HttpContext.Session.SetString("UserType", user.UserType);
+                    HttpContext.Session.SetString("Username", user.Username);
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "Invalid login attempt.");
