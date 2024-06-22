@@ -76,12 +76,13 @@ namespace AnimeSite.Controllers
             return View(genre);
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _genreRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
+
     }
 }
