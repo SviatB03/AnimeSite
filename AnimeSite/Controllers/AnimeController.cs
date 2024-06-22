@@ -107,21 +107,29 @@ namespace AnimeSite.Controllers
         }
 
         [HttpGet]
-        public IActionResult AdminCreate()
+        public async Task<IActionResult> AdminCreate()
         {
-            return View();
+            var genres = await _genreRepository.GetAllAsync();
+            var viewModel = new AdminAnimeViewModel
+            {
+                Anime = new Anime(),
+                Genres = genres
+            };
+            return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AdminCreate(Anime anime)
+        public async Task<IActionResult> AdminCreate(AdminAnimeViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                await _animeRepository.AddAsync(anime);
+                await _animeRepository.AddAsync(viewModel.Anime);
                 return RedirectToAction(nameof(AdminIndex));
             }
-            return View(anime);
+
+            viewModel.Genres = await _genreRepository.GetAllAsync();
+            return View(viewModel);
         }
 
         [HttpGet]
@@ -132,24 +140,34 @@ namespace AnimeSite.Controllers
             {
                 return NotFound();
             }
-            return View(anime);
+
+            var genres = await _genreRepository.GetAllAsync();
+            var viewModel = new AdminAnimeViewModel
+            {
+                Anime = anime,
+                Genres = genres
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AdminEdit(int id, Anime anime)
+        public async Task<IActionResult> AdminEdit(int id, AdminAnimeViewModel viewModel)
         {
-            if (id != anime.AnimeId)
+            if (id != viewModel.Anime.AnimeId)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                await _animeRepository.UpdateAsync(anime);
+                await _animeRepository.UpdateAsync(viewModel.Anime);
                 return RedirectToAction(nameof(AdminIndex));
             }
-            return View(anime);
+
+            viewModel.Genres = await _genreRepository.GetAllAsync();
+            return View(viewModel);
         }
 
         [HttpGet]
@@ -169,6 +187,43 @@ namespace AnimeSite.Controllers
         {
             await _animeRepository.DeleteAsync(id);
             return RedirectToAction(nameof(AdminIndex));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AdminAssignDate(int id)
+        {
+            var anime = await _animeRepository.GetByIdAsync(id);
+            if (anime == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new AssignDateViewModel
+            {
+                AnimeId = anime.AnimeId,
+                Title = anime.Title
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AdminAssignDate(AssignDateViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var releaseSchedule = new ReleaseSchedule
+                {
+                    AnimeId = viewModel.AnimeId,
+                    ReleaseDate = viewModel.ReleaseDate
+                };
+
+                await _releaseScheduleRepository.AddAsync(releaseSchedule);
+                return RedirectToAction(nameof(AdminIndex));
+            }
+
+            return View(viewModel);
         }
     }
 }

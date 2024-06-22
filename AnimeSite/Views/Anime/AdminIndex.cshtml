@@ -1,0 +1,48 @@
+﻿@model IEnumerable<AnimeSite.Entity.Anime>
+
+@{
+    ViewData["Title"] = "Admin Anime List";
+}
+
+<h1>Admin Anime List</h1>
+
+<p>
+    <a asp-action="AdminCreate" class="btn btn-success">Create New</a>
+</p>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Description)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a asp-action="AdminEdit" asp-route-id="@item.AnimeId" class="btn btn-primary">Edit</a>
+                            <a asp-action="AdminDetails" asp-route-id="@item.AnimeId" class="btn btn-info">Details</a>
+                            <a asp-action="AdminDelete" asp-route-id="@item.AnimeId" class="btn btn-danger">Delete</a>
+                            <a asp-action="AdminAssignDate" asp-route-id="@item.AnimeId" class="btn btn-warning">Assign Date</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
