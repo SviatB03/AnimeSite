@@ -1,0 +1,34 @@
+﻿@model IEnumerable<AnimeSite.Entity.Genre>
+
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<h2>Categories</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.GenreId</td>
+                <td>@item.Name</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.GenreId">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.GenreId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
