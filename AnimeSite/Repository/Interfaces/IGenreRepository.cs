@@ -4,10 +4,10 @@ namespace AnimeSite.Repository.Interfaces
 {
     public interface IGenreRepository
     {
-        IEnumerable<Genre> GetAll();
-        Genre GetById(int id);
-        void Add(Genre genre);
-        void Update(Genre genre);
-        void Delete(int id);
+        Task<IEnumerable<Genre>> GetAllAsync();
+        Task<Genre> GetByIdAsync(int id);
+        Task AddAsync(Genre genre);
+        Task UpdateAsync(Genre genre);
+        Task DeleteAsync(int id);
     }
 }
