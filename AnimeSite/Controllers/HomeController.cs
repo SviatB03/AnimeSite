@@ -15,7 +15,7 @@ namespace AnimeSite.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Anime");
         }
 
         public IActionResult Privacy()
