@@ -41,6 +41,11 @@ namespace AnimeSite.Repository
             var sql = "DELETE FROM ReleaseSchedule WHERE ReleaseScheduleId = @Id";
             await _dbConnection.ExecuteAsync(sql, new { Id = id });
         }
+        public async Task DeleteByAnimeIdAsync(int animeId)
+        {
+            var sql = "DELETE FROM ReleaseSchedule WHERE AnimeId = @AnimeId";
+            await _dbConnection.ExecuteAsync(sql, new { AnimeId = animeId });
+        }
     }
 
 }

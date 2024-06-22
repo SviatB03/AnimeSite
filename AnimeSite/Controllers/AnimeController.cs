@@ -193,9 +193,13 @@ namespace AnimeSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AdminDeleteConfirmed(int id)
         {
+            await _releaseScheduleRepository.DeleteByAnimeIdAsync(id);
+
             await _animeRepository.DeleteAsync(id);
+
             return RedirectToAction(nameof(AdminIndex));
         }
+
 
         [HttpGet]
         public async Task<IActionResult> AdminAssignDate(int id)

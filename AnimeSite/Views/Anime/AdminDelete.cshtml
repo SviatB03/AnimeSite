@@ -19,7 +19,8 @@
         </dd>
     </dl>
 
-    <form asp-action="AdminDeleteConfirmed" asp-route-id="@Model.AnimeId" method="post">
+    <form asp-action="AdminDelete" method="post">
+        <input type="hidden" asp-for="AnimeId" />
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-danger" /> |
             <a asp-action="AdminIndex" class="btn btn-secondary">Back to List</a>

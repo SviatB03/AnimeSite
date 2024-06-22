@@ -9,6 +9,7 @@ namespace AnimeSite.Repository.Interfaces
         Task AddAsync(ReleaseSchedule releaseSchedule);
         Task UpdateAsync(ReleaseSchedule releaseSchedule);
         Task DeleteAsync(int id);
+        Task DeleteByAnimeIdAsync(int animeId);
     }
 
 }
