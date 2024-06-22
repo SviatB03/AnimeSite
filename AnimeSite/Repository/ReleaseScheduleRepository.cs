@@ -19,9 +19,9 @@ namespace AnimeSite.Repository
             return await _dbConnection.QueryAsync<ReleaseSchedule>("SELECT * FROM ReleaseSchedule");
         }
 
-        public async Task<ReleaseSchedule> GetByIdAsync(int id)
+        public async Task<ReleaseSchedule> GetByAnimeIdAsync(int animeId)
         {
-            return await _dbConnection.QuerySingleOrDefaultAsync<ReleaseSchedule>("SELECT * FROM ReleaseSchedule WHERE ReleaseScheduleId = @Id", new { Id = id });
+            return await _dbConnection.QuerySingleOrDefaultAsync<ReleaseSchedule>("SELECT * FROM ReleaseSchedule WHERE AnimeId = @AnimeId", new { AnimeId = animeId });
         }
 
         public async Task AddAsync(ReleaseSchedule releaseSchedule)
@@ -32,7 +32,7 @@ namespace AnimeSite.Repository
 
         public async Task UpdateAsync(ReleaseSchedule releaseSchedule)
         {
-            var sql = "UPDATE ReleaseSchedule SET AnimeId = @AnimeId, ReleaseDate = @ReleaseDate WHERE ReleaseScheduleId = @ReleaseScheduleId";
+            var sql = "UPDATE ReleaseSchedule SET ReleaseDate = @ReleaseDate WHERE ReleaseScheduleId = @ReleaseScheduleId";
             await _dbConnection.ExecuteAsync(sql, releaseSchedule);
         }
 
@@ -42,4 +42,5 @@ namespace AnimeSite.Repository
             await _dbConnection.ExecuteAsync(sql, new { Id = id });
         }
     }
+
 }
