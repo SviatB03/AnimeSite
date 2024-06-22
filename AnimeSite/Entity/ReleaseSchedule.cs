@@ -1,4 +1,4 @@
-﻿namespace AnimeSite.Models
+﻿namespace AnimeSite.Entity
 {
     public class ReleaseSchedule
     {

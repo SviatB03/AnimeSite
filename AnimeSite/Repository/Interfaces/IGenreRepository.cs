@@ -1,4 +1,4 @@
-﻿using AnimeSite.Models;
+﻿using AnimeSite.Entity;
 
 namespace AnimeSite.Repository.Interfaces
 {

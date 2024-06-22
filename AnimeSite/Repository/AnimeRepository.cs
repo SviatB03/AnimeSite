@@ -1,8 +1,8 @@
 ﻿using AnimeSite.Repository.Interfaces;
-using AnimeSite.Models;
 using Dapper;
 using System.Collections.Generic;
 using System.Data;
+using AnimeSite.Entity;
 
 namespace AnimeSite.Repository
 {
