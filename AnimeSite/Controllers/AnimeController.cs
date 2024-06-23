@@ -32,12 +32,13 @@ namespace AnimeSite.Controllers
             var animes = await _animeRepository.GetAllAsync();
             var schedules = await _releaseScheduleRepository.GetAllAsync();
 
+       
             var query = from anime in animes
-                        join schedule in schedules on anime.AnimeId equals schedule.AnimeId
+                        join schedule in schedules on anime.AnimeId equals schedule.AnimeId into animeSchedules
                         select new
                         {
                             Anime = anime,
-                            ReleaseDate = schedule.ReleaseDate
+                            ReleaseSchedules = animeSchedules.ToList() 
                         };
 
             if (!string.IsNullOrEmpty(searchString))
@@ -52,14 +53,17 @@ namespace AnimeSite.Controllers
 
             if (startDate.HasValue && endDate.HasValue)
             {
-                query = query.Where(q => q.ReleaseDate >= startDate && q.ReleaseDate <= endDate);
+                query = query.Where(q => q.ReleaseSchedules.Any(rs => rs.ReleaseDate >= startDate && rs.ReleaseDate <= endDate));
             }
 
             var genres = await _genreRepository.GetAllAsync();
+
+    
             var model = new AnimeViewModel
             {
                 Animes = query.Select(q => q.Anime).ToList(),
                 Genres = genres,
+                ReleaseSchedules = schedules, 
                 SearchString = searchString,
                 GenreId = genreId,
                 StartDate = startDate,
@@ -68,6 +72,7 @@ namespace AnimeSite.Controllers
 
             return View(model);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> AddToSaved(int animeId)
